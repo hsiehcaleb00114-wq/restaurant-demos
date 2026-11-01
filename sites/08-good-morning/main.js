@@ -106,7 +106,7 @@
     const phone = $('[data-phone]');
     if (!/^\d{3}$/.test(phone.value)) { msg.textContent = '請輸入手機末三碼，方便取餐時核對喔！'; phone.focus(); return; }
     const no = String(Math.floor(Math.random() * 900) + 100);
-    msg.textContent = `訂單 #${no} 已送出！${pickup.value} 到櫃台報「${phone.value}」取餐。（Demo 網站，不會真的送出）`;
+    msg.textContent = `訂單 #${no} 已送出！${pickup.value} 到櫃台報「${phone.value}」取餐。（這是設計作品，不會真的送出）`;
     cart.clear(); render(false);
   });
   render(false);

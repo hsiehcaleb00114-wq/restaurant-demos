@@ -201,7 +201,7 @@
     form.addEventListener('submit', e => {
       e.preventDefault();
       const d = new FormData(form);
-      form.querySelector('.booking__msg').textContent = `已為你保留 ${d.get('date')} ${d.get('time')}，${d.get('people')}。（此為 Demo 網站，不會真的送出）`;
+      form.querySelector('.booking__msg').textContent = `已為你保留 ${d.get('date')} ${d.get('time')}，${d.get('people')}。（這是設計作品，不會真的送出）`;
     });
   }
 })();
