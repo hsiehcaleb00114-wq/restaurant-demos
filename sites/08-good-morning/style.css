@@ -1,0 +1,240 @@
+/* ==========================================================
+   早安好日早餐店 — 設計系統
+   活潑親民：陽光黃、蛋黃橘、番茄紅、深藍字；圓體標題＋清楚好點的菜單
+   ========================================================== */
+:root {
+  /* 色彩 */
+  --c-yellow: #FFC928;       /* 主色 */
+  --c-yellow-soft: #FFF0B3;
+  --c-cream: #FFF8E7;
+  --c-orange: #FF8A1F;       /* 輔色（裝飾） */
+  --c-orange-deep: #B8420B;  /* 強調文字 */
+  --c-red: #D2331F;
+  --c-navy: #1F2A44;         /* 主文字、按鈕 */
+  --c-muted: #4B546B;
+  --c-white: #FFFFFF;
+  --c-line: rgba(31, 42, 68, .12);
+
+  /* 字體 */
+  --ff-round: "Huninn", "Noto Sans TC", system-ui, sans-serif;
+  --ff-body: "Noto Sans TC", system-ui, sans-serif;
+  --ff-num: "Rubik", "Noto Sans TC", system-ui, sans-serif;
+
+  /* 字級 */
+  --fs-hero: clamp(3.2rem, 11vw, 7.4rem);
+  --fs-h2: clamp(2rem, 5vw, 3.4rem);
+  --fs-body: 1rem;
+  --fs-small: .875rem;
+
+  /* 間距、圓角 */
+  --sp-1: .5rem; --sp-2: 1rem; --sp-3: 1.5rem; --sp-4: 2.5rem; --sp-5: 4rem; --sp-6: 6rem;
+  --gutter: clamp(1rem, 4.5vw, 4rem);
+  --max: 1200px;
+  --r: 22px;
+  --shadow: 0 6px 0 var(--c-navy);
+
+  --ease-bounce: cubic-bezier(.34, 1.56, .64, 1);
+  --ease-out: cubic-bezier(.22, 1, .36, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 140px; }
+body { margin: 0; background: var(--c-cream); color: var(--c-navy); font-family: var(--ff-body); font-size: var(--fs-body); line-height: 1.8; overflow-x: hidden; }
+main { overflow-x: clip; }
+img { display: block; max-width: 100%; height: auto; }
+h1, h2, h3, p, ul, ol, dl, dd, figure { margin: 0; }
+ul, ol { list-style: none; padding: 0; }
+a { color: inherit; }
+button, input, select { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--c-orange-deep); outline-offset: 3px; border-radius: 8px; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.skip { position: absolute; left: 1rem; top: -100px; z-index: 100; background: var(--c-navy); color: #fff; padding: .5rem 1rem; }
+.skip:focus { top: 1rem; }
+.h2 { font-family: var(--ff-round); font-weight: 400; font-size: var(--fs-h2); line-height: 1.3; }
+.hl { position: relative; z-index: 0; white-space: nowrap; }
+.hl::after { content: ""; position: absolute; z-index: -1; left: -3%; right: -3%; bottom: .05em; height: .38em; background: var(--c-yellow); border-radius: 6px; transform: rotate(-1.5deg); }
+.hl--orange::after { background: #FFC49A; }
+
+/* ---------- 按鈕：壓下會彈 ---------- */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: .4rem; min-height: 54px; padding: 0 1.6rem; border-radius: 999px; border: 3px solid var(--c-navy); font-weight: 700; font-size: 1.05rem; text-decoration: none; cursor: pointer; box-shadow: 0 5px 0 var(--c-navy); transition: transform .3s var(--ease-bounce), box-shadow .2s, background-color .2s; }
+.btn:hover, .btn:focus-visible { transform: translateY(-3px); box-shadow: 0 8px 0 var(--c-navy); }
+.btn:active { transform: translateY(4px) scale(1.03, .94); box-shadow: 0 1px 0 var(--c-navy); transition-duration: .08s; }
+.btn--navy { background: var(--c-navy); color: var(--c-yellow); }
+.btn--navy:hover { background: #2C3A5C; }
+.btn--white { background: var(--c-white); }
+.btn--white:hover { background: var(--c-yellow-soft); }
+.btn--sm { min-height: 44px; padding: 0 1.1rem; font-size: .95rem; box-shadow: 0 4px 0 var(--c-navy); }
+
+/* ---------- 頁首 ---------- */
+.header { position: sticky; top: 0; z-index: 60; display: flex; align-items: center; gap: var(--sp-2); padding: .7rem var(--gutter); background: var(--c-yellow); border-bottom: 3px solid var(--c-navy); }
+.logo { display: inline-flex; align-items: center; gap: .5rem; text-decoration: none; margin-right: auto; }
+.logo svg { width: 42px; height: 42px; transition: transform .5s var(--ease-bounce); }
+.logo:hover svg { transform: rotate(-20deg) scale(1.1); }
+.logo span { font-family: var(--ff-round); font-size: 1.45rem; }
+.open-tag { display: none; align-items: center; gap: .4rem; font-family: var(--ff-num); font-weight: 700; font-size: .9rem; background: var(--c-white); border: 2px solid var(--c-navy); border-radius: 999px; padding: .15rem .8rem; }
+.open-tag .dot { width: 8px; height: 8px; border-radius: 50%; background: #1E9E52; }
+@media (min-width: 640px) { .open-tag { display: inline-flex; } }
+
+/* ---------- Hero ---------- */
+.hero { position: relative; background: var(--c-yellow); display: grid; gap: var(--sp-5); padding: var(--sp-4) var(--gutter) var(--sp-6); border-bottom: 3px solid var(--c-navy); }
+.hero__hello { display: inline-block; font-weight: 700; background: var(--c-white); border: 2px solid var(--c-navy); border-radius: 999px; padding: .2rem 1rem; font-size: .9rem; margin-bottom: var(--sp-3); }
+.hero__title { font-family: var(--ff-round); font-weight: 400; font-size: var(--fs-hero); line-height: 1.12; margin-bottom: var(--sp-3); }
+.squiggle { position: relative; display: inline-block; }
+.squiggle::after { content: ""; position: absolute; left: 0; right: 0; bottom: -.12em; height: .22em; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 10'%3E%3Cpath d='M0 5q5-5 10 0t10 0 10 0 10 0' fill='none' stroke='%23E5412D' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E") repeat-x 0 0 / .8em 100%; }
+.hero__lead { max-width: 30em; margin-bottom: var(--sp-4); font-size: 1.05rem; }
+.hero__cta { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+.hero__art { position: relative; width: min(100%, 560px); margin: 0 auto; aspect-ratio: 1; display: grid; place-items: center; }
+.rays { position: absolute; inset: -8%; border-radius: 50%; background: repeating-conic-gradient(from 0deg, rgba(255, 255, 255, .55) 0 8deg, transparent 8deg 20deg); -webkit-mask: radial-gradient(circle, #000 35%, transparent 70%); mask: radial-gradient(circle, #000 35%, transparent 70%); animation: spin 40s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.hero__img { position: relative; width: 86%; border: 4px solid var(--c-navy); border-radius: 30px; overflow: hidden; box-shadow: 10px 10px 0 var(--c-navy); transform: rotate(-3deg); background: var(--c-white); }
+.hero__img img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+.egg { position: absolute; width: 30%; left: -4%; bottom: 4%; filter: drop-shadow(4px 5px 0 rgba(31, 42, 68, .9)); animation: wobble 3.2s ease-in-out infinite; transform-origin: 50% 80%; }
+@keyframes wobble { 0%, 100% { transform: rotate(-6deg); } 50% { transform: rotate(6deg) translateY(-6px); } }
+.price-tag { position: absolute; display: grid; place-content: center; text-align: center; width: 96px; height: 96px; border-radius: 50%; background: var(--c-red); color: var(--c-white); border: 3px solid var(--c-navy); font-family: var(--ff-num); font-weight: 800; font-size: 1.9rem; line-height: 1; box-shadow: 4px 4px 0 var(--c-navy); }
+.price-tag small { font-family: var(--ff-round); font-weight: 400; font-size: .85rem; }
+.price-tag--1 { right: 0; top: 4%; transform: rotate(10deg); }
+.price-tag--2 { right: 6%; bottom: 2%; background: var(--c-white); color: var(--c-navy); width: 82px; height: 82px; font-size: 1.6rem; transform: rotate(-8deg); }
+@media (min-width: 900px) { .hero { grid-template-columns: 1.05fr .95fr; align-items: center; padding-top: var(--sp-5); } }
+
+/* ---------- 跑馬燈 ---------- */
+.marquee { background: var(--c-navy); color: var(--c-yellow); overflow: hidden; border-bottom: 3px solid var(--c-navy); }
+.marquee__track { display: flex; width: max-content; animation: slide 26s linear infinite; }
+.marquee span { white-space: pre; font-family: var(--ff-round); font-size: clamp(1.3rem, 3vw, 2rem); padding: .7rem 0; }
+@keyframes slide { to { transform: translateX(-50%); } }
+
+/* ---------- 三步驟 ---------- */
+.how { max-width: var(--max); margin: 0 auto; padding: var(--sp-6) var(--gutter) var(--sp-4); }
+.how .h2 { margin-bottom: var(--sp-4); }
+.how__steps { display: grid; gap: var(--sp-3); counter-reset: s; }
+.how__steps li { position: relative; display: grid; grid-template-columns: auto 1fr; column-gap: var(--sp-2); align-items: center; padding: var(--sp-3); background: var(--c-white); border: 3px solid var(--c-navy); border-radius: var(--r); }
+.how__n { grid-row: 1 / 3; display: grid; place-items: center; width: 64px; height: 64px; border-radius: 50%; background: var(--c-yellow); border: 3px solid var(--c-navy); font-family: var(--ff-num); font-weight: 800; font-size: 2rem; }
+.how__steps h3 { font-family: var(--ff-round); font-weight: 400; font-size: 1.35rem; }
+.how__steps p { color: var(--c-muted); font-size: var(--fs-small); }
+@media (min-width: 900px) {
+  .how__steps { grid-template-columns: repeat(3, 1fr); }
+  .how__steps li:not(:last-child)::after { content: "→"; position: absolute; right: -1.6rem; top: 50%; transform: translateY(-50%); font-family: var(--ff-num); font-weight: 800; font-size: 1.6rem; z-index: 1; }
+  .how__steps li:nth-child(2) { transform: translateY(1.2rem); }
+}
+
+/* ---------- 套餐票券 ---------- */
+.combo { max-width: var(--max); margin: 0 auto; padding: var(--sp-5) var(--gutter); }
+.combo .h2 { margin-bottom: var(--sp-4); }
+.combo__list { display: grid; gap: var(--sp-3); }
+.ticket { position: relative; padding: var(--sp-4) var(--sp-3) var(--sp-3); border: 3px solid var(--c-navy); border-radius: var(--r); background: var(--c-white); overflow: hidden; transition: transform .4s var(--ease-bounce); }
+.ticket::before, .ticket::after { content: ""; position: absolute; top: 50%; width: 26px; height: 26px; margin-top: -13px; border-radius: 50%; background: var(--c-cream); border: 3px solid var(--c-navy); }
+.ticket::before { left: -16px; } .ticket::after { right: -16px; }
+.ticket:hover { transform: rotate(-1.5deg) translateY(-4px); }
+.ticket--a { background: var(--c-yellow-soft); }
+.ticket--c { background: #FFE2D2; }
+.ticket__label { display: inline-block; font-weight: 700; font-size: .85rem; background: var(--c-navy); color: var(--c-yellow); border-radius: 999px; padding: .1rem .8rem; }
+.ticket h3 { font-family: var(--ff-round); font-weight: 400; font-size: 1.4rem; line-height: 1.4; margin: .7rem 0; }
+.ticket__price { font-family: var(--ff-num); font-weight: 800; font-size: 2.4rem; line-height: 1; margin-bottom: var(--sp-2); }
+.ticket__price s { font-size: .45em; color: var(--c-muted); margin-right: .3em; }
+.ticket figure { display: none; }
+@media (min-width: 900px) {
+  .combo__list { grid-template-columns: 1fr 1.25fr 1fr; align-items: center; }
+  .ticket--b { background: var(--c-navy); color: var(--c-white); transform: scale(1.04); padding-top: 0; }
+  .ticket--b:hover { transform: scale(1.04) rotate(-1.5deg); }
+  .ticket--b .ticket__label { background: var(--c-yellow); color: var(--c-navy); margin-top: var(--sp-3); }
+  .ticket--b .ticket__price s { color: #C7CCDA; }
+  .ticket--b .btn { background: var(--c-yellow); color: var(--c-navy); border-color: var(--c-yellow); box-shadow: 0 4px 0 #0E1424; }
+  .ticket--b figure { display: block; margin: 0 calc(var(--sp-3) * -1); height: 180px; overflow: hidden; border-bottom: 3px solid var(--c-navy); }
+  .ticket--b figure img { width: 100%; height: 100%; object-fit: cover; }
+}
+
+/* ---------- 點餐菜單 ---------- */
+.order { max-width: var(--max); margin: 0 auto; padding: var(--sp-5) var(--gutter) var(--sp-6); }
+.order__head { margin-bottom: var(--sp-3); }
+.order__head p { color: var(--c-muted); font-size: var(--fs-small); margin-top: .4rem; }
+.chips { position: sticky; top: 69px; z-index: 40; background: var(--c-cream); padding: .8rem 0; margin-bottom: var(--sp-3); }
+.chips__inner { position: relative; display: flex; gap: .4rem; overflow-x: auto; scrollbar-width: none; padding: 4px 2px 6px; }
+.chips__inner::-webkit-scrollbar { display: none; }
+.chip { position: relative; z-index: 1; flex: none; display: inline-flex; align-items: center; min-height: 44px; padding: 0 1.1rem; border-radius: 999px; border: 2px solid var(--c-navy); background: var(--c-white); font-weight: 700; text-decoration: none; transition: color .3s, transform .3s var(--ease-bounce); }
+.chip:hover { transform: translateY(-2px); }
+.chip.is-active { color: var(--c-yellow); background: var(--c-navy); }
+.chips__bar { display: none; }
+.cat { margin-bottom: var(--sp-5); }
+.cat__head { display: flex; align-items: center; gap: var(--sp-2); margin-bottom: var(--sp-2); }
+.cat__head img { width: 72px; height: 72px; border-radius: 50%; object-fit: cover; border: 3px solid var(--c-navy); }
+.cat__head h3 { font-family: var(--ff-round); font-weight: 400; font-size: 1.9rem; line-height: 1.2; }
+.cat__head p { color: var(--c-muted); font-size: var(--fs-small); }
+.items { display: grid; gap: .7rem; }
+@media (min-width: 800px) { .items { grid-template-columns: 1fr 1fr; gap: .9rem 1.2rem; } }
+.item { display: grid; grid-template-columns: 1fr auto; grid-template-rows: auto auto; column-gap: var(--sp-2); align-items: center; padding: .9rem 1rem; background: var(--c-white); border: 2px solid var(--c-line); border-radius: 16px; transition: border-color .3s, box-shadow .3s, transform .3s var(--ease-out); }
+.item:hover { border-color: var(--c-navy); transform: translateY(-2px); }
+.item.is-picked { border-color: var(--c-navy); box-shadow: 4px 4px 0 var(--c-yellow); }
+.item__info { grid-row: 1 / 3; }
+.item__name { font-weight: 700; font-size: 1.08rem; }
+.item__desc { color: var(--c-muted); font-size: .82rem; line-height: 1.5; }
+.tag { display: inline-block; font-size: .7rem; background: var(--c-red); color: #fff; padding: 0 .5rem; border-radius: 999px; vertical-align: middle; margin-left: .3rem; }
+.item__price { font-family: var(--ff-num); font-weight: 800; font-size: 1.2rem; text-align: right; }
+.qty { display: flex; align-items: center; gap: .3rem; }
+.qty__btn { width: 36px; height: 36px; border-radius: 50%; border: 2px solid var(--c-navy); background: var(--c-white); cursor: pointer; font-weight: 800; font-size: 1.2rem; line-height: 1; transition: transform .25s var(--ease-bounce), background-color .2s; }
+.qty__plus { background: var(--c-yellow); }
+.qty__btn:hover:not(:disabled) { transform: scale(1.12); }
+.qty__btn:active:not(:disabled) { transform: scale(.9); }
+.qty__btn:disabled { opacity: .35; cursor: default; }
+.qty__n { min-width: 1.4em; text-align: center; font-family: var(--ff-num); font-weight: 800; }
+
+/* ---------- 故事＋數字 ---------- */
+.story { max-width: var(--max); margin: 0 auto; padding: var(--sp-5) var(--gutter) var(--sp-6); display: grid; gap: var(--sp-4); }
+.story__img { border: 4px solid var(--c-navy); border-radius: 200px 200px 24px 24px; overflow: hidden; max-width: 420px; }
+.story__img img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
+.story__text p { margin-top: var(--sp-2); max-width: 32em; }
+.nums { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-2); margin-top: var(--sp-4); }
+.nums div { background: var(--c-yellow); border: 3px solid var(--c-navy); border-radius: 18px; padding: .8rem; text-align: center; }
+.nums div:nth-child(2) { background: #FFE2D2; transform: rotate(2deg); }
+.nums dt { font-size: .8rem; font-weight: 700; }
+.nums dd { font-family: var(--ff-round); font-size: 1rem; }
+.nums dd span { font-family: var(--ff-num); font-weight: 800; font-size: clamp(1.8rem, 4vw, 2.8rem); line-height: 1.1; font-variant-numeric: tabular-nums; }
+@media (min-width: 900px) { .story { grid-template-columns: 1fr 1.3fr; align-items: center; } .story__img { justify-self: end; } }
+
+/* ---------- 來店 ---------- */
+.visit { max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter) var(--sp-6); display: grid; gap: var(--sp-4); align-items: center; }
+.visit__card { background: var(--c-white); border: 3px solid var(--c-navy); border-radius: var(--r); padding: var(--sp-4) var(--sp-3); box-shadow: 8px 8px 0 var(--c-yellow); }
+.visit dl { margin-top: var(--sp-3); }
+.visit dl div { display: grid; grid-template-columns: 3.5em 1fr; gap: var(--sp-2); padding: .7rem 0; border-top: 2px dashed var(--c-line); }
+.visit dt { font-weight: 700; color: var(--c-orange-deep); }
+.visit__imgs { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-2); }
+.visit__imgs img { border-radius: var(--r); border: 3px solid var(--c-navy); aspect-ratio: 3 / 4; object-fit: cover; width: 100%; }
+.visit__imgs img:last-child { transform: translateY(2rem) rotate(3deg); }
+@media (min-width: 900px) { .visit { grid-template-columns: 1fr 1fr; } }
+
+/* ---------- 頁尾 ---------- */
+.footer { background: var(--c-navy); color: #D5DAE6; padding: var(--sp-5) var(--gutter) calc(var(--sp-5) + 70px); font-size: .82rem; text-align: center; }
+.footer__big { font-family: var(--ff-round); font-size: clamp(3rem, 12vw, 7rem); color: var(--c-yellow); line-height: 1.2; margin-bottom: var(--sp-2); }
+.footer a { color: var(--c-yellow); }
+
+/* ---------- 點餐列＋點餐單 ---------- */
+.cartbar { position: fixed; left: 50%; bottom: 14px; z-index: 80; transform: translateX(-50%); width: min(92vw, 460px); }
+.cartbar[hidden] { display: none; }
+.cartbar__btn { width: 100%; display: flex; align-items: center; gap: .7rem; min-height: 60px; padding: 0 1.2rem; border-radius: 999px; border: 3px solid var(--c-navy); background: var(--c-navy); color: var(--c-white); cursor: pointer; box-shadow: 0 6px 0 #0E1424, 0 18px 30px -10px rgba(0, 0, 0, .4); transition: transform .3s var(--ease-bounce); }
+.cartbar__btn:hover { transform: translateY(-2px); }
+.cartbar__icon { width: 26px; height: 26px; fill: var(--c-yellow); stroke: var(--c-yellow); stroke-width: 1.5; }
+.cartbar__count { display: grid; place-items: center; min-width: 28px; height: 28px; padding: 0 .4rem; border-radius: 999px; background: var(--c-red); font-family: var(--ff-num); font-weight: 800; }
+.cartbar__txt { font-weight: 700; margin-right: auto; }
+.cartbar__total { font-family: var(--ff-num); font-weight: 800; font-size: 1.3rem; color: var(--c-yellow); }
+.fly { position: fixed; left: 0; top: 0; z-index: 90; width: 22px; height: 22px; border-radius: 50%; background: var(--c-orange); border: 2px solid var(--c-navy); pointer-events: none; }
+
+.cart { width: min(94vw, 480px); max-height: 86vh; padding: 0; border: 3px solid var(--c-navy); border-radius: 26px; background: var(--c-cream); color: var(--c-navy); box-shadow: 0 30px 60px -20px rgba(0, 0, 0, .5); }
+.cart::backdrop { background: rgba(31, 42, 68, .55); }
+.cart[open] { animation: pop .45s var(--ease-bounce); }
+@keyframes pop { from { transform: translateY(40px) scale(.96); opacity: 0; } }
+.cart__inner { padding: var(--sp-3); display: grid; gap: var(--sp-2); }
+.cart__head { display: flex; justify-content: space-between; align-items: center; }
+.cart__head h2 { font-family: var(--ff-round); font-weight: 400; font-size: 1.6rem; }
+.cart__close { width: 44px; height: 44px; border-radius: 50%; border: 2px solid var(--c-navy); background: var(--c-white); cursor: pointer; font-size: 1.1rem; }
+.cart__list { display: grid; gap: .4rem; max-height: 36vh; overflow: auto; }
+.cart__list li { display: flex; justify-content: space-between; gap: 1rem; padding: .5rem .8rem; background: var(--c-white); border-radius: 12px; }
+.cart__list li b { font-family: var(--ff-num); }
+.cart__field { display: grid; gap: .3rem; font-weight: 700; font-size: .9rem; }
+.cart__field select, .cart__field input { min-height: 48px; padding: 0 .8rem; border: 2px solid var(--c-navy); border-radius: 12px; background: var(--c-white); }
+.cart__sum { display: flex; justify-content: space-between; align-items: baseline; font-weight: 700; border-top: 2px dashed var(--c-line); padding-top: .8rem; }
+.cart__sum strong { font-family: var(--ff-num); font-size: 2rem; }
+.cart__submit { width: 100%; }
+.cart__msg { font-weight: 700; color: #1C7A42; min-height: 1.4em; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; }
+}

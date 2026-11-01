@@ -1,0 +1,243 @@
+/* ==========================================================
+   Bistro 32 小酒館 — 設計系統
+   法式優雅：米白紙、酒紅、深墨綠、黃銅；Cormorant 義大利體＋宋體
+   ========================================================== */
+:root {
+  /* 色彩 */
+  --c-cream: #F4EDE1;       /* 主底 */
+  --c-paper: #FBF7F0;
+  --c-wine: #6E1E2B;        /* 主色：酒紅 */
+  --c-wine-deep: #4A1019;
+  --c-ink: #2A1E1B;
+  --c-muted: #6A5A52;
+  --c-green: #1F3B33;       /* 輔色：小酒館墨綠 */
+  --c-brass: #B08D57;       /* 強調：黃銅（裝飾） */
+  --c-brass-text: #765829;
+  --c-line: rgba(42, 30, 27, .16);
+
+  /* 字體 */
+  --ff-fr: "Cormorant Garamond", "Noto Serif TC", Georgia, serif;
+  --ff-zh: "Noto Serif TC", serif;
+
+  /* 字級 */
+  --fs-hero: clamp(3.4rem, 10vw, 8.6rem);
+  --fs-h2: clamp(2.6rem, 6vw, 5rem);
+  --fs-body: 1rem;
+  --fs-small: .875rem;
+
+  /* 間距 */
+  --sp-1: .5rem; --sp-2: 1rem; --sp-3: 1.5rem; --sp-4: 2.5rem; --sp-5: 4rem; --sp-6: 6.5rem; --sp-7: 10rem;
+  --gutter: clamp(1.2rem, 5vw, 5.5rem);
+  --max: 1320px;
+
+  --ease-out: cubic-bezier(.16, 1, .3, 1);
+  --ease-io: cubic-bezier(.83, 0, .17, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; background: var(--c-cream); color: var(--c-ink); font-family: var(--ff-zh); font-size: var(--fs-body); line-height: 1.95; letter-spacing: .03em; overflow-x: hidden; }
+main { overflow-x: clip; }
+img { display: block; max-width: 100%; height: auto; }
+h1, h2, h3, p, ul, dl, dd, figure { margin: 0; }
+ul { list-style: none; padding: 0; }
+a { color: inherit; }
+button, input, select { font: inherit; color: inherit; }
+em { font-family: var(--ff-fr); font-style: italic; font-weight: 400; }
+:focus-visible { outline: 1.5px solid var(--c-wine); outline-offset: 4px; }
+.skip { position: absolute; left: 1rem; top: -100px; z-index: 200; background: var(--c-wine); color: #fff; padding: .5rem 1rem; }
+.skip:focus { top: 1rem; }
+.h2 { font-family: var(--ff-fr); font-weight: 400; font-size: var(--fs-h2); line-height: 1; }
+.h2 span { display: block; font-family: var(--ff-zh); font-size: clamp(.95rem, 1.3vw, 1.1rem); letter-spacing: .35em; color: var(--c-brass-text); margin-top: 1rem; }
+.h2.center { text-align: center; }
+.h2--light { color: var(--c-cream); }
+.h2--light span { color: #D9BE8C; }
+
+/* ---------- 文字連結：底線由左畫出 ---------- */
+.link { font-family: var(--ff-fr); font-style: italic; font-size: 1.3rem; text-decoration: none; background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat; transition: background-size .6s var(--ease-out); padding-bottom: 2px; }
+.link:hover, .link:focus-visible { background-size: 100% 1px; }
+
+/* ---------- 按鈕 ---------- */
+.btn { position: relative; display: inline-flex; justify-content: center; align-items: center; min-height: 54px; padding: 0 2rem; background: var(--c-wine); color: var(--c-cream); border: 1px solid var(--c-wine); border-radius: 0; font-family: var(--ff-fr); font-size: 1.15rem; letter-spacing: .06em; cursor: pointer; overflow: hidden; isolation: isolate; transition: color .5s var(--ease-out); }
+.btn::before { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--c-cream); clip-path: circle(0% at 50% 100%); transition: clip-path .7s var(--ease-out); }
+.btn:hover, .btn:focus-visible { color: var(--c-wine); }
+.btn:hover::before, .btn:focus-visible::before { clip-path: circle(140% at 50% 100%); }
+.btn:active { transform: scale(.98); }
+
+/* ---------- 標籤游標 ---------- */
+.cursor { display: none; }
+@media (hover: hover) and (pointer: fine) {
+  .js .cursor { display: grid; place-items: center; position: fixed; left: 0; top: 0; z-index: 150; width: 92px; height: 92px; margin: -46px 0 0 -46px; border-radius: 50%; background: var(--c-wine); color: var(--c-cream); font-family: var(--ff-fr); font-style: italic; font-size: 1.2rem; pointer-events: none; transform: scale(0); }
+  [data-cursor] { cursor: none; }
+}
+
+/* ---------- 頁首 ---------- */
+.header { position: absolute; inset: 0 0 auto; z-index: 50; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; padding: var(--sp-2) var(--gutter); }
+.nav { display: flex; gap: clamp(.8rem, 2.4vw, 2.2rem); align-items: center; }
+.nav--r { justify-content: flex-end; }
+.nav a { font-family: var(--ff-fr); font-style: italic; font-size: 1.15rem; text-decoration: none; background: linear-gradient(currentColor, currentColor) 100% 100% / 0 1px no-repeat; transition: background-size .5s var(--ease-out); padding: .3rem 0; }
+.nav a:hover, .nav a:focus-visible { background-size: 100% 1px; background-position: 0 100%; }
+.nav .nav__cta { font-family: var(--ff-zh); font-style: normal; font-size: .9rem; letter-spacing: .2em; border: 1px solid var(--c-ink); padding: .4rem 1rem; background: none; transition: background-color .4s, color .4s; }
+.nav .nav__cta:hover { background: var(--c-wine); border-color: var(--c-wine); color: var(--c-cream); }
+.logo { display: flex; align-items: baseline; gap: .3rem; text-decoration: none; color: var(--c-wine); }
+.logo__b { font-family: var(--ff-fr); font-style: italic; font-size: 1.7rem; }
+.logo__n { font-family: var(--ff-fr); font-weight: 500; font-size: 2.2rem; line-height: 1; }
+@media (max-width: 699px) {
+  .header { grid-template-columns: auto 1fr; }
+  .nav--l { display: none; }
+  .logo { grid-column: 1; }
+  .nav--r a:not(.nav__cta) { display: none; }
+}
+
+/* ---------- Hero ---------- */
+.hero { position: relative; max-width: var(--max); margin: 0 auto; padding: calc(var(--sp-6) + 1rem) var(--gutter) var(--sp-5); display: grid; gap: var(--sp-4); }
+.hero__kicker { font-family: var(--ff-fr); font-style: italic; font-size: 1.2rem; color: var(--c-brass-text); margin-bottom: var(--sp-2); }
+.hero__title { font-family: var(--ff-fr); font-weight: 500; font-size: var(--fs-hero); line-height: .98; letter-spacing: -.01em; color: var(--c-wine); }
+.line { display: block; overflow: hidden; padding-bottom: .08em; }
+.line > span { display: inline-block; }
+.line:nth-child(2) { padding-left: 1.1em; }
+.hero__title em { font-weight: 400; }
+.hero__zh { margin-top: var(--sp-3); letter-spacing: .18em; color: var(--c-muted); }
+.hero__media { position: relative; }
+.hero__frame { position: relative; overflow: hidden; aspect-ratio: 4 / 5; border-radius: 999px 999px 0 0; max-height: 72vh; }
+.hero__frame img { width: 100%; height: 100%; object-fit: cover; }
+.hero__cover { display: none; }
+.js .hero__cover { display: block; position: absolute; inset: -1px; z-index: 1; background: var(--c-cream); transform-origin: top; animation: cover-failsafe 0s 4s forwards; }
+@keyframes cover-failsafe { to { visibility: hidden; } }
+.hero__media figcaption { font-family: var(--ff-fr); font-style: italic; color: var(--c-muted); margin-top: .6rem; font-size: 1.05rem; }
+.hero__foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--sp-2); align-items: baseline; border-top: 1px solid var(--c-line); padding-top: var(--sp-2); font-size: var(--fs-small); color: var(--c-muted); }
+.hero__foot .link { color: var(--c-wine); }
+@media (min-width: 900px) {
+  .hero { grid-template-columns: 1.25fr .75fr; align-items: end; column-gap: var(--sp-5); min-height: 100svh; }
+  .hero__text { padding-bottom: var(--sp-5); }
+  .hero__foot { grid-column: 1 / -1; }
+}
+
+/* ---------- La Maison ---------- */
+.maison { max-width: var(--max); margin: 0 auto; padding: var(--sp-7) var(--gutter); }
+.ornament { display: flex; justify-content: center; margin-bottom: var(--sp-3); }
+.ornament svg { width: 200px; height: 20px; fill: none; stroke: var(--c-brass); stroke-width: 1.2; }
+.maison__grid { display: grid; gap: var(--sp-4); margin-top: var(--sp-6); }
+.maison__lead { font-size: clamp(1.25rem, 2.2vw, 1.7rem); line-height: 1.8; }
+.maison__lead em { font-family: var(--ff-zh); font-style: normal; color: var(--c-wine); }
+.maison__body p { color: var(--c-muted); margin-bottom: var(--sp-2); }
+.sig { font-family: var(--ff-fr); font-style: italic; font-size: 1.4rem; color: var(--c-wine) !important; }
+.maison__img { overflow: hidden; }
+.maison__img img { width: 100%; height: 100%; object-fit: cover; }
+.maison__img--a { aspect-ratio: 2 / 3; max-width: 360px; }
+.maison__img--b { aspect-ratio: 3 / 2; }
+@media (min-width: 900px) {
+  .maison__grid { grid-template-columns: repeat(12, 1fr); column-gap: var(--sp-3); row-gap: 0; }
+  .maison__lead { grid-column: 1 / 7; grid-row: 1; }
+  .maison__img--a { grid-column: 9 / 13; grid-row: 1 / 3; max-width: none; }
+  .maison__body { grid-column: 2 / 7; grid-row: 2; padding-top: var(--sp-4); }
+  .maison__img--b { grid-column: 4 / 11; grid-row: 3; margin-top: -4rem; position: relative; z-index: 1; }
+}
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); margin-top: var(--sp-6); border-block: 1px solid var(--c-line); }
+.stats div { padding: var(--sp-3) var(--sp-1); text-align: center; }
+.stats div + div { border-left: 1px solid var(--c-line); }
+.stats dt { font-size: .8rem; letter-spacing: .15em; color: var(--c-muted); }
+.stats dd { font-family: var(--ff-fr); font-size: clamp(3rem, 8vw, 6rem); line-height: 1; color: var(--c-wine); font-variant-numeric: lining-nums tabular-nums; }
+
+/* ---------- 三道經典 ---------- */
+.plats { background: var(--c-paper); padding: var(--sp-7) var(--gutter); }
+.plats > .h2 { max-width: var(--max); margin: 0 auto var(--sp-6); }
+.plat { max-width: var(--max); margin: 0 auto var(--sp-6); display: grid; gap: var(--sp-3); align-items: center; }
+.plat__img { overflow: hidden; }
+.plat__img img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.4s var(--ease-out); }
+.plat:hover .plat__img img { transform: scale(1.05); }
+.plat--1 .plat__img { aspect-ratio: 16 / 10; }
+.plat--2 .plat__img { aspect-ratio: 3 / 2; }
+.plat--3 .plat__img { aspect-ratio: 4 / 5; max-width: 420px; }
+.plat__no { font-family: var(--ff-fr); font-style: italic; font-size: 2.2rem; color: var(--c-brass-text); line-height: 1; }
+.plat h3 { font-family: var(--ff-fr); font-weight: 500; font-size: clamp(2.2rem, 4.4vw, 3.6rem); line-height: 1.05; color: var(--c-wine); margin: .4rem 0 var(--sp-2); }
+.plat h3 span { display: block; font-family: var(--ff-zh); font-weight: 400; font-size: 1rem; letter-spacing: .3em; color: var(--c-ink); margin-top: .5rem; }
+.plat__text > p:not(.plat__no):not(.price) { color: var(--c-muted); max-width: 26em; }
+.plat .price { font-family: var(--ff-fr); font-size: 1.4rem; margin-top: var(--sp-2); }
+@media (min-width: 900px) {
+  .plat { grid-template-columns: repeat(12, 1fr); gap: 0; }
+  .plat--1 .plat__img { grid-column: 1 / 8; }
+  .plat--1 .plat__text { grid-column: 8 / 12; margin-left: -3rem; background: var(--c-paper); padding: var(--sp-4); position: relative; }
+  .plat--2 .plat__img { grid-column: 6 / 12; grid-row: 1; }
+  .plat--2 .plat__text { grid-column: 2 / 6; grid-row: 1; padding-right: var(--sp-4); text-align: right; }
+  .plat--2 .plat__text > p { margin-left: auto; }
+  .plat--3 .plat__img { grid-column: 3 / 7; }
+  .plat--3 .plat__text { grid-column: 8 / 12; }
+}
+
+/* ---------- 菜單（印刷菜單卡） ---------- */
+.carte { position: relative; padding: var(--sp-7) var(--gutter); background: var(--c-green); }
+.carte__paper { position: relative; z-index: 1; max-width: 980px; margin: 0 auto; background: var(--c-paper); padding: clamp(2rem, 6vw, 5rem) clamp(1.2rem, 5vw, 4.5rem); box-shadow: 0 40px 80px -30px rgba(0, 0, 0, .6); outline: 1px solid var(--c-brass); outline-offset: -14px; }
+.carte__head { text-align: center; margin-bottom: var(--sp-5); }
+.carte__head h2 { font-family: var(--ff-fr); font-weight: 400; font-size: clamp(3.6rem, 9vw, 6.4rem); line-height: 1; color: var(--c-wine); margin: .4rem 0; }
+.carte__small { font-size: .8rem; letter-spacing: .25em; color: var(--c-muted); }
+.carte__cols { display: grid; gap: var(--sp-5); }
+.course h3 { text-align: center; margin-bottom: var(--sp-3); }
+.course h3 em { display: block; font-size: 2.1rem; color: var(--c-wine); line-height: 1.1; }
+.course h3 span { font-size: .8rem; letter-spacing: .35em; color: var(--c-brass-text); font-weight: 400; }
+.course h3::after { content: ""; display: block; width: 40px; height: 1px; margin: .8rem auto 0; background: var(--c-brass); transform: scaleX(var(--draw, 1)); }
+.course li { position: relative; display: grid; grid-template-columns: 1fr auto; column-gap: var(--sp-2); padding: .8rem 0; border-bottom: 1px dotted var(--c-line); transition: padding-left .5s var(--ease-out); }
+.course li::before { content: "◆"; position: absolute; left: -1.1rem; top: 1.25rem; font-size: .5rem; color: var(--c-wine); opacity: 0; transform: scale(0); transition: opacity .4s, transform .4s var(--ease-out); }
+.course li:hover { padding-left: .6rem; }
+.course li:hover::before { opacity: 1; transform: scale(1); }
+.course .fr { font-family: var(--ff-fr); font-size: 1.35rem; font-weight: 500; line-height: 1.3; }
+.course .zh { grid-column: 1; font-size: .85rem; color: var(--c-muted); }
+.course b { grid-column: 2; grid-row: 1 / 3; align-self: center; font-family: var(--ff-fr); font-weight: 500; font-size: 1.3rem; color: var(--c-wine); }
+.menu-du-soir { margin-top: var(--sp-5); padding: var(--sp-3); border: 1px solid var(--c-wine); text-align: center; }
+.menu-du-soir em { font-size: 1.6rem; color: var(--c-wine); }
+.mds__price { font-weight: 600; }
+.mds__price small { display: block; font-weight: 400; color: var(--c-muted); }
+.carte__photo { display: none; }
+@media (min-width: 900px) {
+  .carte__cols { grid-template-columns: 1fr 1fr; column-gap: var(--sp-5); }
+  .course:nth-child(3) { grid-column: 1 / -1; max-width: 520px; margin: 0 auto; width: 100%; }
+}
+@media (min-width: 1200px) {
+  .carte__photo { display: block; position: absolute; width: 220px; box-shadow: 0 30px 50px -20px rgba(0, 0, 0, .6); border: 8px solid var(--c-paper); }
+  .carte__photo img { aspect-ratio: 3 / 4; object-fit: cover; }
+  .carte__photo--1 { left: calc(50% - 780px + 5vw); top: 20%; transform: rotate(-6deg); }
+  .carte__photo--2 { right: calc(50% - 780px + 5vw); bottom: 18%; transform: rotate(5deg); }
+}
+
+/* ---------- 餐酒搭配 ---------- */
+.vin { background: var(--c-wine-deep); color: var(--c-cream); padding: var(--sp-7) var(--gutter); display: grid; gap: var(--sp-5); }
+.vin__intro p { color: #E6D5C3; margin: var(--sp-3) 0; }
+.pairs { display: flex; flex-wrap: wrap; gap: .6rem; }
+.pair { min-height: 48px; padding: 0 1.3rem; background: transparent; border: 1px solid rgba(244, 237, 225, .4); border-radius: 999px; cursor: pointer; letter-spacing: .1em; transition: background-color .4s, color .4s, border-color .4s; }
+.pair:hover { border-color: var(--c-cream); }
+.pair.is-active { background: var(--c-cream); color: var(--c-wine-deep); border-color: var(--c-cream); }
+.wine { display: grid; grid-template-columns: auto 1fr; gap: var(--sp-4); align-items: center; }
+.wine__glass { width: clamp(80px, 12vw, 130px); color: #E6D5C3; }
+.wine__fill { fill: #B3263C; transition: fill .8s var(--ease-io); }
+.wine__card { border-left: 1px solid rgba(244, 237, 225, .3); padding-left: var(--sp-4); }
+.wine__region { font-family: var(--ff-fr); font-style: italic; font-size: 1.2rem; color: #D9BE8C; }
+.wine__name { font-family: var(--ff-fr); font-weight: 500; font-size: clamp(1.8rem, 3.2vw, 2.6rem); line-height: 1.15; margin: .4rem 0 var(--sp-2); }
+.wine__note { color: #E6D5C3; max-width: 30em; }
+.wine__price { margin-top: var(--sp-2); font-family: var(--ff-fr); font-size: 1.2rem; }
+@media (max-width: 599px) { .wine { grid-template-columns: 1fr; } .wine__card { border-left: 0; padding-left: 0; border-top: 1px solid rgba(244, 237, 225, .3); padding-top: var(--sp-3); } }
+@media (min-width: 900px) { .vin { grid-template-columns: 1fr 1.2fr; align-items: center; padding-inline: calc(var(--gutter) + 3vw); } }
+
+/* ---------- 訂位 ---------- */
+.reserver { max-width: var(--max); margin: 0 auto; padding: var(--sp-7) var(--gutter); display: grid; gap: var(--sp-5); }
+.reserver__img { overflow: hidden; aspect-ratio: 4 / 5; border-radius: 0 0 999px 999px; }
+.reserver__img img { width: 100%; height: 100%; object-fit: cover; }
+.form { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-2); margin: var(--sp-4) 0; }
+.form label { display: grid; gap: .3rem; font-size: .8rem; letter-spacing: .2em; color: var(--c-muted); }
+.form label:last-of-type { grid-column: 1 / -1; }
+.form input, .form select { min-height: 50px; padding: 0 .2rem; background: transparent; border: 0; border-bottom: 1px solid var(--c-ink); border-radius: 0; font-size: 1.05rem; letter-spacing: .05em; color: var(--c-ink); transition: border-color .3s; }
+.form input:focus-visible, .form select:focus-visible { outline: none; border-bottom: 2px solid var(--c-wine); }
+.form .btn { grid-column: 1 / -1; }
+.form__msg { grid-column: 1 / -1; color: var(--c-green); min-height: 1.5em; }
+.info div { display: grid; grid-template-columns: 6em 1fr; gap: var(--sp-2); padding: .7rem 0; border-top: 1px solid var(--c-line); }
+.info dt { font-family: var(--ff-fr); font-style: italic; font-size: 1.15rem; color: var(--c-wine); }
+@media (min-width: 900px) { .reserver { grid-template-columns: 5fr 6fr; align-items: center; column-gap: var(--sp-6); } }
+
+/* ---------- 頁尾 ---------- */
+.footer { background: var(--c-green); color: #CFD8D2; padding: var(--sp-6) var(--gutter) var(--sp-4); font-size: .82rem; text-align: center; }
+.footer__big { font-size: clamp(4rem, 14vw, 11rem); line-height: 1; color: var(--c-cream); margin-bottom: var(--sp-3); }
+.footer a { color: var(--c-cream); }
+.footer a:hover { color: #D9BE8C; }
+
+@media (prefers-reduced-motion: reduce) {
+  .js .hero__cover { display: none; }
+  *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; }
+}
